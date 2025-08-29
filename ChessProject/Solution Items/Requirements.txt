@@ -1,0 +1,14 @@
+Requirements (loose)
+
+Minimum Viable Product (MVP)
+MVP1:
+As a library consumer I would like:
+a single object, "Chess Engine", which persists its own state and calls to make moves and manipulate the board state,
+for ease of use
+
+MVP2:
+
+Library Consumer (LC)
+
+
+Stretch Goals (SG)

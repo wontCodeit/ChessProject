@@ -1,0 +1,111 @@
+Designs and trade-offs
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+FIND BOARDS AND SPLIT WORK PROBLEM
+///////////////////////////////////////////////////////////////////////////////////////////////////
+I think I shall first try this 7 step process
+
+1. Beginning board instantiated
+
+2. Utilise futures and promises to start many tasks, each of which computes the legal moves that
+    can be made next (possibly 1 per piece) and produces a set of hashed BOARDS
+
+3. Hash of all added to the ancestry tracker (is Set so duplicates are eliminated) as well as
+    storing in a hash map the boards themselves
+
+4. Work out the value of each board in parallel in a similar way; split the number of boards
+    and just promise-future the result via many tasks. Values then stored via Ancestry tracker
+
+Steps 1-4 can happen at instantiation time
+
+5. Player makes a move. Drop all boards at the same or higher ancestry level. A great many lower
+    level boards could be dropped, but may be difficult to compute so will ignore for now.
+
+6. Calculate the next ONE move for all boards descendent of current board, which recaluclates
+    anscestor values. Only direct descendent stored each time, so recursive search downward
+    although this should only be ~3
+
+7. Repeat step 6 until game end
+
+Trade-offs:
+
+Scenario:
+1. Cannot work out the value of the board at the same time it is made, so forced to loop over again
+    later. Have to move/copy ops on the boards which is a slow down.
+
+2. We avoid processing duplicates, with no need for duplciates until step 4 (storing in Ancestry Tracker?)
+
+Alternates:
+1. Merge steps 2-4
+    Utilise mutexes so taht we check our hash table for if the board has been checked already
+    and work out the value if it doesn't which we then store (acquiring the singular "writer mutex")
+
+2. Don't mind duplciates
+    Only acquire mutex for writing at the end, if that hash already exists in the map accept that
+    we lose a little performance (assumedly)
+
+3. Accept no mutexes
+    Never acquire a mutex- ignore duplicates, work out the value straight away (if at bottom depth?)
+    move these back to main thread where writing is done
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+REPRESENT BOARDS PROBLEM
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+Current idea is store the boards as only the existing pieces and their positions along
+with things such as castling + enpassant
+
+Basic moves pre-calculated
+(e.g. wherever a pawn is on the board, we near-instantly ascertain where it could move if the board
+were empty)
+
+Then we eliminate or add to the "basic moves" based on board state e.g. if there a pieces in the way
+Note that this would currently require (binary?) searching piece vector to get the positions
+
+Only after getting "possible" moves would a boards be produced. Further, we need to have functions
+for ascertaining "legal" moves which would be shown to the client
+
+Alternatives:
+
+1. Pre-calculation is found to be a waste of time
+    If the look up table of "basic" moves just seems to slow things down, rip it out and calculate
+    "possible" moves straight away
+
+2. Store board as 2D array
+    if searching through these "condensed" boards is slow, go back to a 1D 64 size array
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+CALCULATE BOARD VALUE PROBLEM
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+Current idea is to sum the friendly piece values and subtract the enemy piece values
+Then, diund the possible moves and sum the the points for friendly controlled squares and subtract
+for enemy controlled squares
+
+Alternatives:
+
+1. Faster/simpler board value calculation
+    If square counting is a naeve or slow heuristic, give up on it and look at something else
+    perhaps proximity to the centre of the board, pawn advancement, king safety etc.
+
+2. Pruning
+    See if there is a way to short-circuit finding the max/min value of a set of boards by
+    stopping calculations when an extreme value is encountered, one that is likely the highest
+    or lowest so finding the rest is basically not necessary yet. This has tricky ramifications
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+ANCESTRY TRACKER PROBLEM
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+I need to store boards in depth bands (so that they can be dropped quickly when no longer needed)
+I need to be able to dynamically extend these bands (so I can add async results bit by bit)
+I need to store a hash value, so the actual boards can be retrieved
+I need to be able to query these depth bands, to retrieve a board with a specific hash quickly
+I need to store an optional point value, so boards value calc is easy to store/retrieve/query
+I need to store direct descendants so that when needed we can query all values/make new boards
+
+Therefore, a Vector of (const Hash hashVal, optional<int> pointVal, set<Hash> directDescendants)
+makes most sense to. Only slow bit is finding a board of a particular hash, but it is fairly simple
+
+Alternates:
+None? Can't think of anything else viable at the moment

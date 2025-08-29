@@ -1,0 +1,9 @@
+1. Begin a most basic implementation, ensuring good tests coverage
+1a. ChessEngine created, API defined and first implementation is the "basic" variant for use in Console App
+1b. At the same time-ish Create a Console App that allows for easy testing/visualisation in C++
+
+2. Set up benchmarking, profiling
+
+3. Iterative Chess Engines to work on performative, investigating trade-offs etc.
+
+4. Work beyond the MVP (integration with C# client, use C-Make etc.)
