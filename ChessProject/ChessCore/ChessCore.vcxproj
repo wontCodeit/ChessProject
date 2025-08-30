@@ -136,9 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AncestryEntry.h" />
+    <ClInclude Include="AncestryTracker.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="SamplePublicExport.h" />
+    <ClInclude Include="TypeAliases.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
