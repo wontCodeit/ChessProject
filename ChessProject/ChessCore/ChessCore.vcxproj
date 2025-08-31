@@ -139,13 +139,18 @@
     <ClInclude Include="AncestryEntry.h" />
     <ClInclude Include="AncestryTracker.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="ChessEngine.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="IChessEngine.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="SamplePublicExport.h" />
     <ClInclude Include="TypeAliases.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AncestryTracker.cpp" />
+    <ClCompile Include="ChessEngine.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,25 +1,35 @@
 #include "pch.h"
-#include "ChessEngine.h"
 #include "GameState.h"
 #include "TypeAliases.h"
+#include "ChessEngine.h"
+
+
 
 namespace ChessCore
 {
-    void ChessCore::ChessEngine::MakeMove(Position primaryPosition, Position endPosition)
+    ChessEngine::ChessEngine()
     {
     }
-    
-    void ChessCore::ChessEngine::Initialise(int depth)
+
+    void ChessEngine::Initialise(int depth)
     {
+        depth;
+        return;
     }
-    
-    std::pair<Position, Position> ChessCore::ChessEngine::FindBestMove()
+
+    void ChessEngine::MakeMove(Position primaryPosition, Position endPosition)
     {
-        return std::pair<Position, Position>();
+        primaryPosition; endPosition;
+        return;
     }
-    
-    GameState ChessCore::ChessEngine::GetGameState()
+
+    std::pair<Position, Position> ChessEngine::FindBestMove()
     {
-        return GameState();
+        return { 0, 0 };
+    }
+
+    GameState ChessEngine::GetGameState()
+    {
+        return GameState::Undecided;
     }
 }

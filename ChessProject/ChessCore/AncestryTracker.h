@@ -11,5 +11,5 @@ namespace ChessCore
         std::vector<std::vector<AncestryEntry>> Data;
 
         void DropHighestLevel();
-    }
+    };
 }

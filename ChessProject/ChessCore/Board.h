@@ -14,7 +14,7 @@ namespace ChessCore
     {
     public:
         // Data isn't a descriptive name, but "Board.Board" doesn't seem right either
-        std::vector<ChessCore::Piece, Position> Data;
+        std::vector<std::pair<Piece, Position>> Data;
 
         bool WhiteToMove;
 
