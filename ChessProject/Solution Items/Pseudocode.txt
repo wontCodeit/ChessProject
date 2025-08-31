@@ -1,0 +1,46 @@
+// From some .NET wrapper
+START
+/////
+VAR mce <- MixedChessEngine()
+mce.INITIALIZE(3) # Depth 3
+
+mce.GET_BOARD_STATE() # all pieces and postions returned
+... GUI stuff ...
+mce.MAKE_MOVE(int, int) # must be some value [0, 63]
+mce.GET_GAME_STATE()
+IF (!GAME_STATE_CONTINUE)
+    ... GUI stuff ...
+ELSE
+    REPEAT_GAME_LOOP()
+    # repeat from after initialize essentially
+
+mce.DECOMPOSE() # must be called somewhere
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// Vague plan for the native pespective. Take all with grains of salt
+START
+/////
+VAR ce <- ChessEngineImplementation()
+ce.GENERATE_INITIAL_MOVE_TABLE() # this could be compile time
+
+# GENERATE NEW BOARDS WITH givenBoard
+FOR EACH PIECE IN givenBoard
+    FIND POSSIBLE MOVES
+    MAKE NEW BOARDS WITH NEW MOVES
+    GENERATE HASHES
+    STORE IN m_allUniqueBoards # No store if identical hash i.e. identical board already found
+    RECORD AS DESCENDANT IN m_ancestryTracker # Again, duplicates need ignoring
+
+FOR EACH BOARD b IN m_allUniqueBoards
+    IF DEPTH > m_currentDepthBand AND DEPTH < m_initialDepth # this check should look much different
+        GENERATE NEW BOARDS WITH b
+
+# FIND LINE VALUES
+FOR EACH LINEAGE l IN m_ancestryTracker
+    LINEAGE.END CALCULATE VALUES
+    IF !(ALL LOWER LEVELS CALCULATED)
+        LINEAGE.END CALCULATE VALUES
+    LINEAGE.ASSIGN_UPPER_LEVEL
+    LINEAGE.CALCULATE_GAME_STATE (?)
+
+

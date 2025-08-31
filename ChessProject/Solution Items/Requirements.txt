@@ -1,0 +1,104 @@
+Requirements (loose)
+
+Minimum Viable Product (MVP)
+MVP1:
+As a library consumer I would like:
+a single object, "Chess Engine", which persists its own state and calls to make moves and manipulate the board state,
+for ease of use
+
+MVP2:
+As a library consumer I would like:
+to be able to set the depth* of the Chess engine at a particular value prior to making the first move,
+so that I don't have a large slow down initially and less parameters need passing one each call (ease of use) 
+
+*depth here refers to the number of full turns that the Chess Engine takes into account. let depth = n
+when n = 1 with white to move, the Chess Engine will calculate the moves white can make and the follow up black has
+when n = 2 with white to move, look at white moves, then black moves after that, then white and finally black's moves
+
+MVP3:
+As a library consumer I would like:
+to be able to query the Chess Engine to ascertain what the best* pssible nex move is,
+so that a player can play against the computer
+
+*best, as in highest  point balue the Chess Engine has calculate for the given depth provided at initialisation
+
+MVP4:
+As a library consumer I would like:
+to be able to query what the current state of the board is i.e. the position and type of all the pieces in play,
+so that I can display this to a user
+
+MVP5:
+As a library consumer I would like:
+to be able to query the current gamestate e.g. white has won, stalemate, black has won, undecided
+so that I know when to end the game and can display the result to a user
+
+Library Consumer (LC)
+LC1:
+As a library consumer I would like:
+to be able to query the Chess Engine to ascertain the calculated value of a given next move,
+so that during play the evaluation of a given move is accessible
+
+LC2:
+As a library consumer I would like:
+to be able to separate any calls into its own thread,
+so that it doesn't block the program (so GUI is responsive)
+
+LC3:
+As a library consumer I would like:
+to be able to directly alter the starting state of the board,
+so I have the flexibility to easily set up different game modes e.g. chess 960, odds matches
+
+LC4:
+As a library consumer I would like:
+to be able to query what moves are legal* in the current board state,
+so that theses could be displayed in a GUI to the player
+
+*basic moves are moves a piece can make on an empty board.
+Possible moves are moves that a piece could make, accounting for the current board state- but not king positions
+Legal moves are possible moves, accounting for king positions e.g. it is possible to move a pawn forward- but illegal if this puts King in check
+
+LC5:
+As a library consumer I would like:
+to be able to use the enumerations from the native core project in my own mixed/c# one,
+so that maintenance and probability of development bugs are reduced
+
+LC6:
+As a library consumer I would like:
+the core Chess Engine solution to utilise CMake as a build tool,
+so that the logic is decoupled from a specific platform, then allowing reuse in other OS e.g. Windows and Linux
+
+Stretch Goals (SG), not fully defined yet
+
+SG1:
+As a library consumer I would like:
+to allow entry of, and generation of, standard chess notation,
+so that a user can save and load chess games
+
+SG2:
+As a library consumer I would like:
+to be able to initialise the Chess Engine to calculate "half depths"*,
+so that I have greater control over the capabilities of computer opponents
+
+*e.g. depth 1.5 and white to move: CE calculates white moves, black moves, then white
+
+SG3:
+As a library consumer I would like:
+to be able to define custom pieces which obey a variety of rules* set by me,
+so that I have greater control over the modes of play available
+
+*"Variety of rules" meaning a combination of castling, leaping like knights and mixed/new movement types
+
+SG4:
+As a library consumer I would like:
+to be able to apply any standard rule* to 1 or many pieces*,
+so that I have greater control over the modes of play available
+
+*this includes movement rule types (e.g. can move as a rook does, can move as both king and pawn) as well as castling, leaping, enpassant etc.
+*this might be allowing all pieces to castle with any other piece, queens can now leap, knights also move like bishops, and so on
+
+User Experience Goals (UEG), DEFINITELY not fully thought out yet (although I want to use gRPC/protobufs)
+
+UEG1:
+As a user I would like:
+to be able to match opponents in online multiplayer
+-> the interaction of this with custom pieces and 1:M standard rules would be interesting, maybe this is rogue-like-ish
